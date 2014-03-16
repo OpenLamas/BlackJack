@@ -13,31 +13,29 @@ void fillDeck(Card * const wDeck){
 	} // for
 } // function
 
-void shuffleDeck(Card * const wDeck){
-	size_t i, p1, p2;	//two random position in the deck
-	Card temp;
-	srand((unsigned int)time(NULL));	//randomise the seed
-	for(i=0; i<200; ++i){
-		p1 = rand()%CARDS;
-		do{	//a loop make sure that two different cards are selected
-			p2 = rand()%CARDS;
-		}while (p2 == p1);
-		temp = wDeck[p1];
-		wDeck[p1] = wDeck[p2];
-		wDeck[p2] = temp;
-	}	//for
-}	//function
+/****
+ *	Make a rand [0, m)
+ ****/
+unsigned int rrand(int m)
+{
+	return (unsigned int)((double)m * ( rand() / (RAND_MAX+1.0) ));
+}
 
-/*void dealDeck(const Card * const wDeck){
-	size_t k1, k2;
-	printf("\n\n\n");
-	for(k1=0, k2=k1+26; k1<CARDS/2; ++k1, ++k2) {
-		printf("Card:%3d %c Color:%2d    ",
-			wDeck[k1].face, wDeck[k1].suit+HEART, wDeck[k1].color);
-		printf("Card:%3d %c Color:%2d\n ",
-			wDeck[k2].face, wDeck[k2].suit+HEART, wDeck[k2].color);
-	}	//for
-}*/	//function
+/**
+ * Shuffle the deck with the Knuth Shuffle
+ */
+void shuffleDeck(Card * const wDeck){
+	int n = 52;
+    Card swappingCard;
+    unsigned int randomCardIndex;
+    
+	while(n > 1){
+        randomCardIndex = rrand(n--);
+        swappingCard = wDeck[randomCardIndex];
+        wDeck[randomCardIndex] = wDeck[n];
+        wDeck[n] = swappingCard;
+    }
+}	//function
 
 Card drawCard(Card dk[]){
 	//search for the firs non-empty place in the deck

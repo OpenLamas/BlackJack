@@ -106,7 +106,7 @@ int playGame(Card dk[], Player p){
 			black = 1;
 		for (h = 0; h < HANDSIZE; h++)
 		{
-			if (p.hand[i].face = p.hand[j].face){
+			if (p.hand[i].face == p.hand[j].face){
 				double_hand++;
 				if (double_hand == 2) break;
 			}
