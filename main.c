@@ -40,7 +40,7 @@ void clearScreen(void){
 //function definition of the playGame
 int playGame(Card dk[], Player p){
 	Card dhand[HANDSIZE];
-	int i, ppoint, dpoint, j, number_of_card = 0, double_hand = 15, h;
+	int i, ppoint, dpoint, j, number_of_card = 0, double_hand = 15, h, red = 0, black = 0;
 
 	//ask the player to put a bid
 	p.bid = askBid(p);
@@ -97,16 +97,22 @@ int playGame(Card dk[], Player p){
 	}	//end of if
 
 	for (i = 0, j = 0; i < HANDSIZE; i++){							//Loop for defining the number of card "7" and also to count the number of card used.
-		if (dhand[i].face == 7)
+		red = black = 0;
+		if (p.hand[i].face == 7)
 			j++;
+		if (p.hand[i].face != 'J' && p.hand[i].face != 'Q' && p.hand[i].face != 'K' && p.hand[i].color == 0) //p.hand[i].color == 0 => correspond to red ? 
+			red = 1;
+		if (p.hand[i].face != 'J' && p.hand[i].face != 'Q' && p.hand[i].face != 'K' && p.hand[i].color == 1) //p.hand[i].color == 1 => correspond to black
+			black = 1;
 		for (h = 0; h < HANDSIZE; h++)
 		{
-			if (dhand[i].face = dhand[j].face){
+			if (p.hand[i].face = p.hand[j].face){
 				double_hand++;
 				if (double_hand == 2) break;
 			}
 		}
-
+		
+		
 		number_of_card++;
 	
 	}
@@ -124,6 +130,8 @@ int playGame(Card dk[], Player p){
 	if (double_hand == 2 && ppoint == 21) //Case if the player has double in hand with 21 points, bid * 6
 		p.points += p.bid * 6;
 	
+	if ((red==1 || black==1) && ppoint == 21)		//Case if all the cards and red or
+		p.points += p.bid * 4;
 	//if the player holds, the dealer has to draw cards
 	//until his point is greater or he got bowed
 	//calculate for the result (Update player's point)
