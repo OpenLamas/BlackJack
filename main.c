@@ -40,7 +40,7 @@ void clearScreen(void){
 //function definition of the playGame
 int playGame(Card dk[], Player p){
 	Card dhand[HANDSIZE];
-	int i, ppoint, dpoint;
+	int i, ppoint, dpoint, j, number_of_card = 0;
 
 	//ask the player to put a bid
 	p.bid = askBid(p);
@@ -71,6 +71,7 @@ int playGame(Card dk[], Player p){
 	if(ppoint > BLACKJACK) {	//player loses immediately
 		gotoxy(0,BID+1); printf("Sorry, you lost. ");
 		p.points -= p.bid;
+		
 	}
 
 	if(ppoint == BLACKJACK) {	//player gets the blackjack
@@ -95,7 +96,24 @@ int playGame(Card dk[], Player p){
 		}	//else
 	}	//end of if
 
+	for (i = 0, j = 0; i < HANDSIZE; i++){							//Loop for defining the number of card "7" and also to count the number of card used.
+		if (dhand[i].face == 7)
+			j++;
+		number_of_card++;
+	
+	}
+	if (number_of_card == 5 && ppoint == 21 ){						//Case if the player has five card with 21 points, points *10
+		p.points = p.points * 10;
+	}
 
+	if (number_of_card == 5 && ppoint < 21){
+		p.points = p.points * 4;
+	}
+
+
+	if (j == 3)							//Case if the player has three card 7 in his game, points *10
+		p.points = p.points * 10;
+	
 	//if the player holds, the dealer has to draw cards
 	//until his point is greater or he got bowed
 	//calculate for the result (Update player's point)
