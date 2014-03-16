@@ -16,9 +16,8 @@ void fillDeck(Card * const wDeck){
 /****
  *	Make a rand [0, m)
  ****/
-unsigned int rrand(int m)
-{
-	return (unsigned int)((double)m * ( rand() / (RAND_MAX+1.0) ));
+int rrand(int m){
+	return (int)((double)m * ( rand() / (RAND_MAX+1.0) ));
 }
 
 /**
@@ -28,6 +27,8 @@ void shuffleDeck(Card * const wDeck){
 	int n = 52;
     Card swappingCard;
     unsigned int randomCardIndex;
+    
+    srand((unsigned int)time(NULL));
     
 	while(n > 1){
         randomCardIndex = rrand(n--);

@@ -5,16 +5,8 @@
 	#define UTF8_DISPLAY
 #endif
 
-//enum CARDNAME {Ace, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Joker, Queen, King};
-
-#ifdef _WIN32
-	enum BORDERS {VL = 179, TR = 191, BL, HL = 196, BR = 217, TL};
-#else
-	enum BORDERS {VL = '|', TR = '\\', BL = '\\', HL = '_', BR = '/', TL = '/'};
-#endif
-
-enum LINE {PH = 0, PP = 10, DH=11, DP = 21, MORE=23, BID};
-enum WHO {PLAYER, DEALER};
+enum LINE {PH = 0, PP = 10, DH=11, DP = 21, MORE=10, BID};
+enum WHO {DEALER, PLAYER_1, PLAYER_2, PLAYER_3, PLAYER_4, PLAYER_5};
 #define EMPTY 15
 #define BLACKJACK 21
 
@@ -36,7 +28,6 @@ typedef struct{
 void fillDeck(Card * const wDeck);
 void shuffleDeck(Card * const wDeck);
 void dealDeck(const Card * const wDeck);
-void makeCardFrame(Card, int, enum WHO);
 void gotoxy(short, short);
 char moreGame(void);
 char moreCard(void);
@@ -47,4 +38,7 @@ int showPlayerHand(Card ph[]);
 int showDealerHand(Card ph[]);
 void clearLine(short);
 void clearScreen(void);
-void printSymboles(Card c, int XStart, int YStart);
+int rrand(int m);
+void displayGameBoard(int nbPlayers);
+void displayMiniCard(Card card, int offset, enum WHO who);
+void displayPoints(int points, enum WHO who);

@@ -42,11 +42,10 @@ int askBid(Player p){
 
 int showPlayerHand(Card ph[]){
 	int i, j, playerPoint = 0;
-	gotoxy(0,PH);	// the first row for player's hand
 	for(i=0, j=0; i<HANDSIZE; ++i, ++j){
 		if(ph[i].face != EMPTY){	//not empty entry, display the card
-			makeCardFrame(ph[i], i, PLAYER);
-			if (ph[i].face < 10)
+			displayMiniCard(ph[i], i, PLAYER_1);
+            if (ph[i].face < 10)
 				playerPoint += (ph[i].face+1);
 			else
 				playerPoint += 10;
@@ -54,17 +53,15 @@ int showPlayerHand(Card ph[]){
 			j--;
 		}
 	}
-	gotoxy(0,PP);	// the second row for second Player's point
-	printf("Players point: %d", playerPoint);
+    displayPoints(playerPoint, PLAYER_1);
 	return playerPoint;
 }	//end function
 
 int showDealerHand(Card ph[]){	
 	int i, j, point = 0;
-	gotoxy(0,DH);	// the fourth row for dealer's hand
 	for(i=0, j=0; i<HANDSIZE; ++i,++j){
 		if(ph[i].face != EMPTY){	//not empty entry, display the card
-			makeCardFrame(ph[i], j, DEALER);
+            displayMiniCard(ph[i], j, DEALER);
 			if (ph[i].face < 10)
 				point += (ph[i].face+1);
 			else
@@ -73,7 +70,6 @@ int showDealerHand(Card ph[]){
 			j--;
 		}
 	}
-	gotoxy(0,DP);	// the fifth row for dealer's point
-	printf("Dealer's point: %d", point);
+    displayPoints(point, DEALER);
 	return point;
 }

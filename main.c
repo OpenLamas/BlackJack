@@ -7,22 +7,20 @@ int main (void) {
 	Player player;
 	player.points = 100;	//inatialize the player's point
 
-#ifdef DEBUG
+/*#ifdef DEBUG
 	printf("Symbol of suits: \u2660 \u2665 \u2666 \u2663");
-#endif
+#endif*/
 	
 	do{
-#ifdef DEBUG
+/*#ifdef DEBUG
 		printf("New Game! \n");
-#endif
+#endif*/
 		clearScreen();
 		fillDeck(deck);
 		shuffleDeck(deck);
 		player.points = playGame(deck, player);
 	}while(moreGame()=='y');
 	printf("See you next time !\n");
-	//deal(deck);
-	//makeCardFrame(deck[0]);
 
 	return 0;
 }
@@ -45,6 +43,8 @@ int playGame(Card dk[], Player p){
 	//ask the player to put a bid
 	p.bid = askBid(p);
 	
+    displayGameBoard(1);
+    
 	for(i=0; i<HANDSIZE; ++i){	//empty the hands
 		p.hand[i].face = EMPTY;
 		dhand[i].face = EMPTY;
