@@ -110,18 +110,18 @@ int playGame(Card dk[], Player p){
 		number_of_card++;
 	
 	}
-	if (number_of_card == 5 && ppoint == 21 ){						//Case if the player has five card with 21 points, points *10
+	if (number_of_card == 5 && ppoint == 21 ){						//Case if the player has five card with 21 points, bid *10
 		p.points += p.bid * 10;
 	}
 
-	if (number_of_card == 5 && ppoint < 21){
+	if (number_of_card == 5 && ppoint < 21){						//Case if the player has five card, but less than 21 points, bid * 6
 		p.points += p.bid * 4;
 	}
 
-	if (j == 3)							//Case if the player has three card 7 in his game, points *10
+	if (j == 3)							//Case if the player has three card 7 in his game, bid *10
 		p.points += p.bid * 10;
 
-	if (double_hand == 2 && ppoint == 21)
+	if (double_hand == 2 && ppoint == 21) //Case if the player has double in hand with 21 points, bid * 6
 		p.points += p.bid * 6;
 	
 	//if the player holds, the dealer has to draw cards
