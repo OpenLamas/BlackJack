@@ -55,14 +55,14 @@ int playGame(Card dk[], Player p){
 		p.hand[i] = drawCard(dk);
 		dhand[i] = drawCard(dk);
 	}
-	ppoint = showPlayerHand(p.hand);
-	dpoint = showDealerHand(dhand);
+	ppoint = showHand(p.hand, PLAYER_1);
+	dpoint = showHand(dhand, DEALER);
 
 	//ask the player for more cards
 	while(ppoint < BLACKJACK){
 		if( moreCard() == 'y'){	//draw a new card from deck
 			p.hand[i++] = drawCard(dk);
-			ppoint = showPlayerHand(p.hand);
+			ppoint = showHand(p.hand, PLAYER_1);
 		}
 		else
 			break;
@@ -83,7 +83,7 @@ int playGame(Card dk[], Player p){
 		i=2;
 		while(dpoint < ppoint){
 			dhand[i++] = drawCard(dk);
-			dpoint = showDealerHand(dhand);
+			dpoint = showHand(dhand, DEALER);
 		}	//while
 
 		if(dpoint > BLACKJACK){
