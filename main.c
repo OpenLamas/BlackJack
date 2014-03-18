@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 int main (void) {
-	Card deck[CARDS]; //declare an array of of cards
+	Card deck[CARDS];		//declare an array of of cards
 	Player player;
 	player.points = 100;	//inatialize the player's point
 
@@ -96,13 +96,13 @@ int playGame(Card dk[], Player p){
 		}	//else
 	}	//end of if
 
-	for (i = 0, j = 0; i < HANDSIZE; i++){							//Loop for defining the number of card "7" and also to count the number of card used.
+	for (i = 0, j = 0; i < HANDSIZE; i++){							//Loop for defining the special rules that may modify the player points. 
 		red = black = 0;
 		if (p.hand[i].face == 7)
 			j++;
 		if (p.hand[i].face != 'J' && p.hand[i].face != 'Q' && p.hand[i].face != 'K' && p.hand[i].color == 0) //p.hand[i].color == 0 => correspond to red ? 
 			red = 1;
-		if (p.hand[i].face != 'J' && p.hand[i].face != 'Q' && p.hand[i].face != 'K' && p.hand[i].color == 1) //p.hand[i].color == 1 => correspond to black
+		if (p.hand[i].face != 'J' && p.hand[i].face != 'Q' && p.hand[i].face != 'K' && p.hand[i].color == 1) //p.hand[i].color == 1 => correspond to black ?
 			black = 1;
 		for (h = 0; h < HANDSIZE; h++)
 		{
@@ -111,10 +111,7 @@ int playGame(Card dk[], Player p){
 				if (double_hand == 2) break;
 			}
 		}
-		
-		
 		number_of_card++;
-	
 	}
 	if (number_of_card == 5 && ppoint == 21 ){						//Case if the player has five card with 21 points, bid *10
 		p.points += p.bid * 10;
@@ -124,14 +121,18 @@ int playGame(Card dk[], Player p){
 		p.points += p.bid * 4;
 	}
 
-	if (j == 3)							//Case if the player has three card 7 in his game, bid *10
+	if (j == 3){													//Case if the player has three card 7 in his game, bid *10
 		p.points += p.bid * 10;
+	}
 
-	if (double_hand == 2 && ppoint == 21) //Case if the player has double in hand with 21 points, bid * 6
+	if (double_hand == 2 && ppoint == 21){							//Case if the player has double in hand with 21 points, bid * 6
 		p.points += p.bid * 6;
-	
-	if ((red==1 || black==1) && ppoint == 21)		//Case if all the cards and red or
+	}
+
+	if ((red==1 || black==1) && ppoint == 21){						//Case if all the cards and red or
 		p.points += p.bid * 4;
+	}
+
 	//if the player holds, the dealer has to draw cards
 	//until his point is greater or he got bowed
 	//calculate for the result (Update player's point)
