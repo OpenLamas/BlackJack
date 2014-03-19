@@ -6,135 +6,66 @@ int main (void) {
 	Card deck[CARDS]; //declare an array of of cards
 	Player player;
 	player.points = 100;	//inatialize the player's point
+    int numberPlayers = 0;
+    Player listPlayers[MAX_PLAYER];
 
-/*#ifdef DEBUG
-	printf("Symbol of suits: \u2660 \u2665 \u2666 \u2663");
-#endif*/
-	
 	do{
-/*#ifdef DEBUG
-		printf("New Game! \n");
-#endif*/
-		clearScreen();
-		fillDeck(deck);
-		shuffleDeck(deck);
-		player.points = playGame(deck, player);
-	}while(moreGame()=='y');
-	printf("See you next time !\n");
+		clearScreen();                                  /* We start by clearing the screen */
+		fillDeck(deck);                                 /* We fill the deck with the cards */
+		shuffleDeck(deck);                              /* We shuffle the deck */
+        if(numberPlayers == 0){                       /* If the number of players is not yet defined */
+          numberPlayers = askNumberPlayer();          /* We ask for the number of player */
+          initPlayersPoints(listPlayers, numberPlayers);    /* We initialize the array of player */
+        } else {
+          rebuy(listPlayers);                         /* Check if (a|some) player(s) need more chips */
+        }
+		newGame(numberPlayers, listPlayers, deck);    /* We run a new game */
+	} while(moreGame()=='y');
+	byeMessage();
 
 	return 0;
 }
 
-#ifdef _WIN32
-void clearScreen(void){
-	system("cls");
+/**
+ *	Make a rand [0, m)
+ */
+int rrand(int m){
+	return (int)((double)m * ( rand() / (RAND_MAX+1.0) ));
 }
-#else
-void clearScreen(void){
-	system("clear");
-}
-#endif
 
-//function definition of the playGame
-int playGame(Card dk[], Player p){
-	Card dhand[HANDSIZE];
-	int i, ppoint, dpoint, j, number_of_card = 0, double_hand = 15, h, red = 0, black = 0;
-
-	//ask the player to put a bid
-	p.bid = askBid(p);
-	
-    displayGameBoard(1);
+/**
+ *      Run a full single game
+ */
+void newGame(int numberPlayer, Player listPlayers[], Card deck[]){
+    int i;
+    Player dealer;
     
-	for(i=0; i<HANDSIZE; ++i){	//empty the hands
-		p.hand[i].face = EMPTY;
-		dhand[i].face = EMPTY;
-	}
-
-	//draw cards (2 for each)
-	for(i=0; i<2; ++i){
-		p.hand[i] = drawCard(dk);
-		dhand[i] = drawCard(dk);
-	}
-	ppoint = showHand(p.hand, PLAYER_1);
-	dpoint = showHand(dhand, DEALER);
-
-	//ask the player for more cards
-	while(ppoint < BLACKJACK){
-		if( moreCard() == 'y'){	//draw a new card from deck
-			p.hand[i++] = drawCard(dk);
-			ppoint = showHand(p.hand, PLAYER_1);
-		}
-		else
-			break;
-	}
-
-	if(ppoint > BLACKJACK) {	//player loses immediately
-		gotoxy(0,BID+1); printf("Sorry, you lost. ");
-		p.points -= p.bid;
-		
-	}
-
-	if(ppoint == BLACKJACK) {	//player gets the blackjack
-		gotoxy(0,BID+1); printf("BlackJack !!");
-		p.points += p.bid*3;
-	}
-
-	if(ppoint < BLACKJACK) {	// player holds
-		i=2;
-		while(dpoint < ppoint){
-			dhand[i++] = drawCard(dk);
-			dpoint = showHand(dhand, DEALER);
-		}	//while
-
-		if(dpoint > BLACKJACK){
-			gotoxy(0,BID+1); printf("Dealer blowed out !");
-			p.points += p.bid;
-		}
-		else{
-			gotoxy(0,BID+1); printf("Sorry, you lost.");
-			p.points -= p.bid;
-		}	//else
-	}	//end of if
-
-	for (i = 0, j = 0; i < HANDSIZE; i++){							//Loop for defining the number of card "7" and also to count the number of card used.
-		red = black = 0;
-		if (p.hand[i].face == 7)
-			j++;
-		if (p.hand[i].face != 'J' && p.hand[i].face != 'Q' && p.hand[i].face != 'K' && p.hand[i].color == 0) //p.hand[i].color == 0 => correspond to red ? 
-			red = 1;
-		if (p.hand[i].face != 'J' && p.hand[i].face != 'Q' && p.hand[i].face != 'K' && p.hand[i].color == 1) //p.hand[i].color == 1 => correspond to black
-			black = 1;
-		for (h = 0; h < HANDSIZE; h++)
-		{
-			if (p.hand[i].face == p.hand[j].face){
-				double_hand++;
-				if (double_hand == 2) break;
-			}
-		}
-		
-		
-		number_of_card++;
-	
-	}
-	if (number_of_card == 5 && ppoint == 21 ){						//Case if the player has five card with 21 points, bid *10
-		p.points += p.bid * 10;
-	}
-
-	if (number_of_card == 5 && ppoint < 21){						//Case if the player has five card, but less than 21 points, bid * 6
-		p.points += p.bid * 4;
-	}
-
-	if (j == 3)							//Case if the player has three card 7 in his game, bid *10
-		p.points += p.bid * 10;
-
-	if (double_hand == 2 && ppoint == 21) //Case if the player has double in hand with 21 points, bid * 6
-		p.points += p.bid * 6;
-	
-	if ((red==1 || black==1) && ppoint == 21)		//Case if all the cards and red or
-		p.points += p.bid * 4;
-	//if the player holds, the dealer has to draw cards
-	//until his point is greater or he got bowed
-	//calculate for the result (Update player's point)
-
-	return p.points;	//return players point
+    getBids(listPlayers);                                           /* We get bids for all the players              */
+    displayGameBoard(numberPlayer);
+    initPlayersHand(listPlayers);
+    
+    initDealerHand(&dealer);
+    serveCard(&dealer, deck, DEALER, 2);
+    
+    for(i=0; i<numberPlayer; ++i){                                  /* For each player                              */
+        serveCard(&listPlayers[i], deck, i, 2);                     /* We get 2 cards                               */
+        
+        
+        while (handPoints(listPlayers[i].hand) < BLACKJACK){        /* While the player has less than a blackjack   */
+            if(moreCard() == 'y')                                   /* If he want another card                      */
+                serveCard(&listPlayers[i], deck, i, 1);
+            else                                                    /* If not, stop                                 */
+                break;
+        }
+        
+        if(handPoints(listPlayers[i].hand) > BLACKJACK)             /* If the player has more than 21 points        */
+            showOutOfBound(i);                                      /* We can already tell him he lost              */
+        else if(handPoints(listPlayers[i].hand) == BLACKJACK)       /* Else if the player has a BlackJack           */
+            showBlackJack(i);                                       /* We can tell him now too                      */
+    }
+    
+    dealerMoves(&dealer, deck);                                     /* It's time the the dealer to play             */
+    
+    givePoints(listPlayers, handPoints(dealer.hand));               /* We calculate win/lose chips and              */
+                                                                    /* show it to the players                       */
 }
