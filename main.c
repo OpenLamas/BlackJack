@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 int main (void) {
-	Card deck[CARDS]; //declare an array of of cards
+	Card deck[CARDS];		//declare an array of of cards
 	Player player;
 	player.points = 100;	//inatialize the player's point
     int numberPlayers = 0;
@@ -67,5 +67,4 @@ void newGame(int numberPlayer, Player listPlayers[], Card deck[]){
     dealerMoves(&dealer, deck);                                     /* It's time the the dealer to play             */
     
     givePoints(listPlayers, handPoints(dealer.hand));               /* We calculate win/lose chips and              */
-                                                                    /* show it to the players                       */
 }
