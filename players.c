@@ -1,5 +1,4 @@
-#include "card.h"
-#include <stdio.h>
+#include "blackjack.h"
 
 /**
  *  Initialize the array of player with 100 points for real player
@@ -23,7 +22,8 @@ void getBids(Player listPlayers[]){
     int i;
     
     for(i=0; i<MAX_PLAYER; ++i)
-        askBid(i, &listPlayers[i]);
+        if(listPlayers[i].points != -1)
+            askBid(i+1, &listPlayers[i]);
 }
 
 /**

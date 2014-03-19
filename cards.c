@@ -1,15 +1,11 @@
-#include "card.h"
-#include <stdio.h>
-#include <stdlib.h> // rand(), srand()
-#include <time.h>   // time()
-
+#include "blackjack.h"
 
 /**
  *  Fill the deck with CARDS cards
  */
 
 void fillDeck(Card * const wDeck){
-	size_t i;
+	int i;
 	for(i=0; i<CARDS; i++){
 		wDeck[i].face = i%(CARDS/4);
 		wDeck[i].suit = (unsigned int)i/(CARDS/4);
@@ -24,8 +20,6 @@ void shuffleDeck(Card * const wDeck){
 	int n = CARDS;
     Card swappingCard;
     unsigned int randomCardIndex;
-    
-    srand((unsigned int)time(NULL));
     
 	while(n > 1){
         randomCardIndex = rrand(n--);

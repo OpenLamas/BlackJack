@@ -1,4 +1,4 @@
-#include "card.h"
+#include "blackjack.h"
 #include "stdio.h"  // printf(), fflush(), scanf()
 #include "stdlib.h" // system()
 
@@ -27,7 +27,7 @@ int askNumberPlayer(void){
     
     do{
         gotoxy(0, NBPLAYER);
-        printf("How many player will play? (1 to 5)");
+        printf("How many player will play? (1 to 5): ");
         fflush(stdin);
         scanf("%d", &numberPlayer);
     } while (numberPlayer<1 || numberPlayer>MAX_PLAYER);
@@ -102,7 +102,7 @@ void rebuy(Player listPlayers[]){
         if (listPlayers[i].points < 20) {
             do {
                 gotoxy(0, BID);
-                printf("Player %d, need more chips? (y/n)", i);
+                printf("Player%d, need more chips? (y/n): ", i+1);
                 fflush(stdin);
                 scanf("%c", &c);
             } while(c != 'y' || c != 'n');
@@ -218,7 +218,7 @@ void askBid(enum WHO who, Player *p){
 	do{
         clearLine(BID);
 		gotoxy(0,BID);
-		printf("Player %d have your points: %d. Your bid(5 to 25): ", who, p->points);
+		printf("Player%d have your points: %d. Your bid(5 to 25): ", who, p->points);
 		scanf("%d", &p->bid);
 	}while((p->bid<5 || p->bid>25) && p->bid < p->points);
 }

@@ -1,6 +1,6 @@
-#include "card.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "blackjack.h"
+#include <stdlib.h> // rand(), srand()
+#include <time.h>   // time()
 
 int main (void) {
 	Card deck[CARDS];		//declare an array of of cards
@@ -9,6 +9,8 @@ int main (void) {
     int numberPlayers = 0;
     Player listPlayers[MAX_PLAYER];
 
+    srand((unsigned int)time(NULL));
+    
 	do{
 		clearScreen();                                  /* We start by clearing the screen */
 		fillDeck(deck);                                 /* We fill the deck with the cards */
