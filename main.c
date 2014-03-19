@@ -47,26 +47,33 @@ void newGame(int numberPlayer, Player listPlayers[], Card deck[]){
     initPlayersHand(listPlayers);
     
     initDealerHand(&dealer);
-    serveCard(&dealer, deck, DEALER, 2);
+    serveCard(&dealer, deck, DEALER, 1);
     
     for(i=0; i<numberPlayer; ++i){                                  /* For each player                              */
-        serveCard(&listPlayers[i], deck, i, 2);                     /* We get 2 cards                               */
+        serveCard(&listPlayers[i], deck, i+1, 2);                   /* We get 2 cards                               */
         
         
         while (handPoints(listPlayers[i].hand) < BLACKJACK){        /* While the player has less than a blackjack   */
-            if(moreCard() == 'y')                                   /* If he want another card                      */
-                serveCard(&listPlayers[i], deck, i, 1);
+            if(moreCard(i+1) == 'y')                                /* If he want another card                      */
+                serveCard(&listPlayers[i], deck, i+1, 1);
             else                                                    /* If not, stop                                 */
                 break;
         }
         
         if(handPoints(listPlayers[i].hand) > BLACKJACK)             /* If the player has more than 21 points        */
-            showOutOfBound(i);                                      /* We can already tell him he lost              */
+            showOutOfBound(i+1);                                    /* We can already tell him he lost              */
         else if(handPoints(listPlayers[i].hand) == BLACKJACK)       /* Else if the player has a BlackJack           */
-            showBlackJack(i);                                       /* We can tell him now too                      */
+            showBlackJack(i+1);                                     /* We can tell him now too                      */
     }
     
     dealerMoves(&dealer, deck);                                     /* It's time the the dealer to play             */
+    
+    if(handPoints(dealer.hand) > BLACKJACK)                         /* If the dealer has more than 21 points        */
+        showOutOfBound(DEALER);                                     /* We can already tell him he lost              */
+    else if(handPoints(dealer.hand) == BLACKJACK)                   /* Else if the player has a BlackJack           */
+        showBlackJack(DEALER);                                      /* We can tell him now too                      */
+    
+    showWinner(listPlayers, handPoints(dealer.hand));               /* We print the names of the winners            */
     
     givePoints(listPlayers, handPoints(dealer.hand));               /* We calculate win/lose chips and              */
 }

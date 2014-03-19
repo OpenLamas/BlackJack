@@ -39,7 +39,7 @@ void serveCard(Player *player, Card deck[], enum WHO who, int numberOfCards){
         if(numberOfCards == 0)
             break;
         
-        if(player->hand[i].face != EMPTY){
+        if(player->hand[i].face == EMPTY){
             player->hand[i] = drawCard(deck);
             numberOfCards--;
         }
@@ -53,7 +53,6 @@ void serveCard(Player *player, Card deck[], enum WHO who, int numberOfCards){
  *
  *  Return: Points
  */
-
 int handPoints(Card hand[]){
     int points=0, i, ace=0;
     

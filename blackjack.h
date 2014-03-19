@@ -12,7 +12,7 @@
     #define UTF8_DISPLAY
 #endif
 
-enum LINE {PH = 0, PP = 10, DH=11, DP = 21, MORE=10, BID, NBPLAYER};
+enum LINE {WM=8, MORE=13, BID};
 
 /* Dealer rules
  if HS17 (Hit Soft 17) is defined
@@ -51,13 +51,14 @@ void gotoxy(short, short);
 void clearLine(short);
 void rebuy(Player listPlayers[]);
 void displayGameBoard(int nbPlayers);
-char moreCard(void);
+char moreCard(enum WHO who);
 void showOutOfBound(enum WHO who);
 void showBlackJack(enum WHO who);
 void showHand(Card hand[], enum WHO who);
 void displayMiniCard(Card card, int offset, enum WHO who);
 void displayPoints(int points, enum WHO who);
 void askBid(enum WHO who, Player *p);
+void showWinner(Player listPlayers[], int dealerScore);
 
 
 // Card Management

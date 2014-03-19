@@ -26,7 +26,7 @@ int askNumberPlayer(void){
     int numberPlayer;
     
     do{
-        gotoxy(0, NBPLAYER);
+        gotoxy(0, MORE);
         printf("How many player will play? (1 to 5): ");
         fflush(stdin);
         scanf("%d", &numberPlayer);
@@ -99,7 +99,7 @@ void rebuy(Player listPlayers[]){
     char c;
     
     for(i=0; i<MAX_PLAYER; ++i){
-        if (listPlayers[i].points < 20) {
+        if (listPlayers[i].points != -1 && listPlayers[i].points < 20) {
             do {
                 gotoxy(0, BID);
                 printf("Player%d, need more chips? (y/n): ", i+1);
@@ -141,12 +141,12 @@ void displayGameBoard(int nbPlayers){
  *
  *  Return: (y|n) choice of the user
  */
-char moreCard(void){
+char moreCard(enum WHO who){
 	char c;
 	do{
 		clearLine(MORE);
         gotoxy(0,MORE);
-		printf("More Card? (y/n): ");
+		printf("Player%d, More Card? (y/n): ", who);
 		scanf("%c", &c);
 	} while(c != 'y' && c != 'n');
 	return c;
@@ -221,4 +221,31 @@ void askBid(enum WHO who, Player *p){
 		printf("Player%d have your points: %d. Your bid(5 to 25): ", who, p->points);
 		scanf("%d", &p->bid);
 	}while((p->bid<5 || p->bid>25) && p->bid < p->points);
+}
+
+/**
+ *      Print the name(s) of the winner(s)
+ */
+void showWinner(Player listPlayers[], int dealerScore){
+    int i;
+    int winnerCounter=0;
+    
+    for(i=0; i<MAX_PLAYER; ++i){
+        if (handPoints(listPlayers[i].hand) <= BLACKJACK && (handPoints(listPlayers[i].hand) > dealerScore || dealerScore > BLACKJACK)){
+            gotoxy(9*winnerCounter, WM);
+            printf("Player%d,", i+1);
+            winnerCounter++;
+        }
+    }
+    
+    if(winnerCounter == 0){
+        gotoxy(0, WM);
+        printf("The Dealer Win !");
+    } else {
+        gotoxy(9*(winnerCounter)-2, WM);
+        printf(" WIN !");
+    }
+    
+    
+    
 }
