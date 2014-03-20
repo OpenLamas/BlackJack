@@ -71,7 +71,7 @@ void givePoints(Player listPlayers[], int dealerPoints){
     
     for (i=0; i<MAX_PLAYER; ++i) {
         if(listPlayers[i].points != -1){
-            if((dealerPoints < BLACKJACK && handPoints(listPlayers[i].hand) < dealerPoints) || handPoints(listPlayers[i].hand) > BLACKJACK){
+            if(handPoints(listPlayers[i].hand) > BLACKJACK || (dealerPoints <= BLACKJACK && handPoints(listPlayers[i].hand) < dealerPoints)){
                 listPlayers[i].points -= listPlayers[i].bid;
             } else {
                 listPlayers[i].points += listPlayers[i].bid * specialProfit(listPlayers[i].hand);
