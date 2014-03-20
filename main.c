@@ -4,11 +4,8 @@
 
 int main (void) {
 	Card deck[CARDS];		//declare an array of of cards
-	Player player;
 	int numberPlayers = 0;
 	Player listPlayers[MAX_PLAYER];
-	player.points = 100;	//inatialize the player's point
-    
 
     srand((unsigned int)time(NULL));
     
